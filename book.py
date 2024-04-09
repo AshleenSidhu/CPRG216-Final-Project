@@ -3,7 +3,7 @@ Book Class
 
 Attributes:
 isbn
-title
+title 
 author
 genre int
 avaiable true/false
