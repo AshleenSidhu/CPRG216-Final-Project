@@ -12,7 +12,8 @@ Author: Ashleen Sidhu
 """
  
 class Book:
-
+    def __init__(self):
+        pass
     def get_genre_name():
         pass
 
