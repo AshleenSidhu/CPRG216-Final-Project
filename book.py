@@ -5,11 +5,12 @@ availability, title, author, isbn, and the genre.
 Author: Phattharaporn I. and Ashleen S.
 Date: 2024-04-11
 """
- 
+from typing import Final 
+
 class Book:
 
     # Constant genre name dictionary 
-    GENRE_NAMES = {
+    GENRE_NAMES: Final = {
         0: "Romance",
         1: "Mystery",
         2: "Science Fiction",
