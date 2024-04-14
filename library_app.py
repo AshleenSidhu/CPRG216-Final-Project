@@ -6,10 +6,9 @@ add, remove and print catalog for books.
 Author: Phattharaporn I. and Ashleen S.
 Date: 2024-04-11
 """
-
+from book import Book
 import os
 
-# 
 def load_books(file_name):
     #recieves empty list 
     book = []
@@ -84,3 +83,8 @@ def main():
     else: #file does not exist enter error message and leave program
         print(f"File not found. Re-enter book catalog filename: ")
         return
+    
+    options = 
+
+    while(options != 0):
+        print()
