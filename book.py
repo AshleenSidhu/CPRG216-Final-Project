@@ -8,6 +8,10 @@ Date: 2024-04-11
 from typing import Final 
 
 class Book:
+    """
+    This class implements attributes and methods, with setters and getters to display book properties
+    
+    """
 
     # Constant genre name dictionary 
     GENRE_NAMES: Final = {
