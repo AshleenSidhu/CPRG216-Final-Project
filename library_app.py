@@ -56,32 +56,32 @@ def search_books(books, user_search):
     #list for the user searches to be saved to
     search_result = []
     
+    #searches through each book in the book list for the user input
     for book in books:
         if user_search in book.get_isbn() or \
             user_search in book.get_title().lower() or \
             user_search in book.get_author().lower() or \
             user_search in book.get_genre().lower():
                 search_result.append(book)
-        
+    #if the search list is 0 then there are no books matching the atrributes in the book list
     if len(search_result) == 0:
         print("No matching books found.")
-    return search_result
+    return search_result 
 
 
 def borrow_book(books):
     #input ISBN from the user and calls find_book_by_isbn()
-    ISBN: Final = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
 
     #finds the ISBN through calling the find_book_by_isbn function
-    find_book = find_book_by_isbn(books, ISBN)
+    index = find_book_by_isbn(books, isbn)
 
     #if the input from the user is invalid print error message
-    if find_book is None:
+    if index == -1:
         print("No book found with that ISBN")
-        return
     
     #otherwise if book is found then display it's availablility
-    if books.get_availability() == "Available":
+    if books[index].get_availability() == "Available":
         print(f"{books.get_title()} with ISBN {books.get_isbn()} successfully borrowed.")
         books.borrow_it() #invokes the borrow method
     else: 
@@ -89,42 +89,42 @@ def borrow_book(books):
         return
 
 
-def find_book_by_isbn(books, ISBN):
+def find_book_by_isbn(books, isbn):
     #assigning and intializing index variable to 0
     index = 0
 
     #iterate through the book list
     for index in range(len(books)):
-        if books[index].get_isbn() == ISBN: #compare the isbn of the book with index to find the required isbn that the user is searching for
+        if books[index].get_isbn() == isbn: #compare the isbn of the book with index to find the required isbn that the user is searching for
             return index #return index if isbn is found 
     return -1 #return -1 if isbn is not found 
 
 
-def return_book():
+def return_book(books):
     pass
 
 
 
 
-def add_book():
+def add_book(books):
     pass
 
 
 
 
-def remove_book():
+def remove_book(books):
     pass
 
 
 
 
-def print_books(books, user_search):
+def print_books(books):
     pass
 
 
 
 
-def save_books():
+def save_books(books, file_name):
     pass
 
 
@@ -135,14 +135,20 @@ def main():
 
     print("Starting the system...")
     file_name = input("Enter book catalog filename: ")
+    while not os.path.exists(file_name):
+        file_name = input(f"File not found. Re-enter book catalog filename: ")
+        # file_name = input("Enter book catalog filename: ")
+    
+    load_books(books, file_name)
+    print("Book catalog has been loaded\n", end="")
+    # #checks to see if file name is valid    
+    # if os.path.exists(file_name): #if file does exists enter confirmation message
+    #     print("Book catalog has been loaded\n", end="")
+    #     load_books(books, file_name)
+    # else: #file does not exist enter error message and leave program
+    #     print(f"File not found. Re-enter book catalog filename: ")
 
-    #checks to see if file name is valid    
-    if os.path.exists(file_name): #if file does exists enter confirmation message
-        print("Book catalog has been loaded\n", end="")
-        load_books(books, file_name)
-    else: #file does not exist enter error message and leave program
-        print(f"File not found. Re-enter book catalog filename: ")
-
+    find_book_by_isbn(books, ISBN)
 
     while True:
         #displays menu and gets users selection input
@@ -154,14 +160,16 @@ def main():
 
             #input search string from user
             user_search = input("Enter search value: ")
-            #calls search_books function
+            #calls search books function
             matched_books = search_books(books, user_search)
-            print_books()
+            print_books(books)
             print(*matched_books)
             
         # choice is 2 
         if user_choice == "2":
-            print("-- Borrow a book --")
+            print("\n-- Borrow a book --")
+            #input ISBN from the user and calls find_book_by_isbn()
+            #isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
             #calls the borrow_book function
             borrow_book(books)
             
