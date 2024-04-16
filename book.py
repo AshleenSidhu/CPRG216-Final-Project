@@ -51,7 +51,7 @@ class Book:
 
     # Getter method that returns the name of the genre 
     def get_genre_name(self):
-        return self.GENRE_NAMES[self.__genre]
+        return self.GENRE_NAMES[int(self.__genre)]
 
     # Getter method that finds the availability of the book
     def get_availability(self):
