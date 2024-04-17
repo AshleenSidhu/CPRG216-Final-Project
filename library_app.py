@@ -11,7 +11,7 @@ from book import Book
 from typing import Final
 import os
 
-#disctionary for menu selections
+#dictionary for menu selections
 menu_options = {
     "1": ". Search for books",
     "2": ". Borrow a book",
@@ -58,10 +58,10 @@ def search_books(books, user_search):
     
     #searches through each book in the book list for the user input
     for book in books:
-        if user_search in book.get_isbn() or \
-            user_search in book.get_title().lower() or \
-            user_search in book.get_author().lower() or \
-            user_search in book.get_genre().lower():
+        if user_search.lower() in book.get_isbn() or \
+            user_search.lower() in book.get_title().lower() or \
+            user_search.lower() in book.get_author().lower() or \
+            user_search.lower() in book.get_genre_name().lower():
                 search_result.append(book)
     #if the search list is 0 then there are no books matching the atrributes in the book list
     if len(search_result) == 0:
@@ -79,14 +79,13 @@ def borrow_book(books):
     #if the input from the user is invalid print error message
     if index == -1:
         print("No book found with that ISBN")
-    
-    #otherwise if book is found then display it's availablility
-    if books[index].get_availability() == "Available":
-        print(f"{books.get_title()} with ISBN {books.get_isbn()} successfully borrowed.")
-        books.borrow_it() #invokes the borrow method
-    else: 
-        print(f"{books.get_title()} with ISBN {books.get_isbn()} is not currently available.")
-        return
+    else:
+        #otherwise if book is found then display it's availablility
+        if books[index].get_availability() == "Available":
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully borrowed.")
+            books[index].borrow_it() #invokes the borrow method
+        else: 
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently available.")
 
 
 def find_book_by_isbn(books, isbn):
@@ -117,38 +116,36 @@ def remove_book(books):
 
 
 
-
 def print_books(books):
-    pass
+    #display book heading
+    print(f"{'ISBN':<15}{'Title':<26}{'Author':<26}{'Genre':<21}{'Availability'}")
+    print("-" * 14, "-" * 25,  "-" * 25, "-" * 20, "-" * 12)
 
-
+    #formats each book in the book list
+    for book in books:
+        print(f"{book.get_isbn()} {book.get_title():<25} {book.get_author():<25} {book.get_genre_name():<20} {book.get_availability()}")
 
 
 def save_books(books, file_name):
     pass
 
 
-
 def main():
-    #book empty list 
+    #empty list for books
     books = []
 
+    #starts the program
     print("Starting the system...")
     file_name = input("Enter book catalog filename: ")
+
+    #loops if file name is invalid so user has to re-enter another file name
     while not os.path.exists(file_name):
         file_name = input(f"File not found. Re-enter book catalog filename: ")
-        # file_name = input("Enter book catalog filename: ")
     
+    #if file name is valid call the load books function and displays appropriate message
     load_books(books, file_name)
     print("Book catalog has been loaded\n", end="")
-    # #checks to see if file name is valid    
-    # if os.path.exists(file_name): #if file does exists enter confirmation message
-    #     print("Book catalog has been loaded\n", end="")
-    #     load_books(books, file_name)
-    # else: #file does not exist enter error message and leave program
-    #     print(f"File not found. Re-enter book catalog filename: ")
 
-    find_book_by_isbn(books, ISBN)
 
     while True:
         #displays menu and gets users selection input
@@ -162,19 +159,20 @@ def main():
             user_search = input("Enter search value: ")
             #calls search books function
             matched_books = search_books(books, user_search)
-            print_books(books)
-            print(*matched_books)
+            print_books(matched_books)
             
         # choice is 2 
         if user_choice == "2":
             print("\n-- Borrow a book --")
-            #input ISBN from the user and calls find_book_by_isbn()
-            #isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+            
             #calls the borrow_book function
             borrow_book(books)
+        
+
+        #if user_choice == "2130":
+        
             
-            
-        save_books()
+        #save_books()
 
     
 if __name__ == "__main__":
