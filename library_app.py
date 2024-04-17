@@ -24,7 +24,6 @@ menu_heading = ("\nReader's Guild Library - Main Menu")
 
 #function for adding 
 def load_books(books, file_name):
-    
     book_obj = open(file_name, "r")
 
     for line in book_obj:
@@ -46,7 +45,7 @@ def print_menu(menu_heading, menu_options):
     #asks user for a selection from the menu
     while True:
         user_choice = input("Enter your selection: ")
-        if user_choice in menu_options:
+        if user_choice in menu_options or "2130":
             return user_choice 
         else: #otherwise if menu option is not found print error message
             print("Invalid option")
@@ -78,7 +77,7 @@ def borrow_book(books):
 
     #if the input from the user is invalid print error message
     if index == -1:
-        print("No book found with that ISBN")
+        print("No book found with that ISBN.")
     else:
         #otherwise if book is found then display it's availablility
         if books[index].get_availability() == "Available":
@@ -151,29 +150,65 @@ def main():
         #displays menu and gets users selection input
         user_choice = print_menu(menu_heading, menu_options)
 
-        # choice 1
-        if user_choice == "1":
+        while user_choice == "2130":
+        
+            print("\nReader's Guild Library - Librarian Menu\n" + "=" * 39)
+
+            #print_menu(menu_heading, menu_options)
+            del menu_options["0"]
+            menu_options["4"] = ". Add a book"
+            menu_options["5"] = ". Remove a book"
+            menu_options["6"] = ". Print catalog"
+            menu_options["0"] = ". Exit the system"
+
+            #prints the librarian menu options
+            for key, value in menu_options.items():
+                print(f"{key}{value}")
+
+            librarian_choice = input("Enter your selection: ")
+
+            #user selects library additional options
+            if librarian_choice == "4":
+                print("\n-- Add a book --")
+                add_book(books)
+            if librarian_choice == "5":
+                print("\n-- Remove a book --")
+                remove_book(books)
+            if librarian_choice == "6":
+                print("\n-- Print catalog --")
+                print_books(books)
+            break
+        
+        # selection 1
+        if user_choice or librarian_choice == "1":
             print("\n-- Search for books --")
 
             #input search string from user
             user_search = input("Enter search value: ")
             #calls search books function
             matched_books = search_books(books, user_search)
-            print_books(matched_books)
+            #if matching search is found then prints the search results 
+            if matched_books:
+                print_books(matched_books)
             
-        # choice is 2 
-        if user_choice == "2":
+        # selection 2 
+        if user_choice or librarian_choice == "2":
             print("\n-- Borrow a book --")
             
             #calls the borrow_book function
             borrow_book(books)
         
-
-        #if user_choice == "2130":
-        
+        # selection 3
+        elif user_choice or librarian_choice == "3":
+            print("\n-- Return a book --")
             
-        #save_books()
+            
+        # selection 0 
+        else:
+            print("\n-- Exit the system --")
+            save_books(books)
+            print("Book catalog has been saved.\nGood Bye!")
 
-    
+        
 if __name__ == "__main__":
     main()
