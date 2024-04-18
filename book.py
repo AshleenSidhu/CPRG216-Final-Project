@@ -48,7 +48,7 @@ class Book:
     
     def get_genre(self):
         return self.__genre
-
+    
     # Getter method that returns the name of the genre 
     def get_genre_name(self):
         return self.GENRE_NAMES[int(self.__genre)]
