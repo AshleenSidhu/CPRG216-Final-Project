@@ -49,7 +49,7 @@ def print_menu(menu_heading, menu_options):
         else: #otherwise if menu option is not found print error message
             print("Invalid option")
 
-#fubction for searching books
+#function for searching books
 def search_books(books, user_search):
     #list for the user searches to be saved to
     search_result = []
@@ -149,7 +149,7 @@ def main():
         #displays menu and gets users selection input
         user_choice = print_menu(menu_heading, menu_options)
 
-        #if user selects librarian menu options
+        #if user enters special passcode 2130 then librarian options are unlocked
         if user_choice == "2130":
         
             print("\nReader's Guild Library - Librarian Menu\n" + "=" * 39)
