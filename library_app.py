@@ -45,7 +45,7 @@ def print_menu(menu_heading, menu_options):
     #asks user for a selection from the menu
     while True:
         user_choice = input("Enter your selection: ")
-        if user_choice in menu_options or "2130":
+        if user_choice in menu_options or user_choice == "2130":
             return user_choice 
         else: #otherwise if menu option is not found print error message
             print("Invalid option")
@@ -150,7 +150,8 @@ def main():
         #displays menu and gets users selection input
         user_choice = print_menu(menu_heading, menu_options)
 
-        while user_choice == "2130":
+        #if user selects librarian menu options
+        if user_choice == "2130":
         
             print("\nReader's Guild Library - Librarian Menu\n" + "=" * 39)
 
@@ -177,10 +178,12 @@ def main():
             if librarian_choice == "6":
                 print("\n-- Print catalog --")
                 print_books(books)
-            break
+
+            if librarian_choice in menu_options:
+                user_choice = librarian_choice
         
         # selection 1
-        if user_choice or librarian_choice == "1":
+        if user_choice == "1":
             print("\n-- Search for books --")
 
             #input search string from user
@@ -192,19 +195,18 @@ def main():
                 print_books(matched_books)
             
         # selection 2 
-        if user_choice or librarian_choice == "2":
+        if user_choice == "2":
             print("\n-- Borrow a book --")
             
             #calls the borrow_book function
             borrow_book(books)
         
         # selection 3
-        elif user_choice or librarian_choice == "3":
+        if user_choice == "3":
             print("\n-- Return a book --")
             
-            
         # selection 0 
-        else:
+        if user_choice == "0":
             print("\n-- Exit the system --")
             save_books(books)
             print("Book catalog has been saved.\nGood Bye!")
