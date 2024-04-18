@@ -18,7 +18,7 @@ menu_options = {
     "0": ". Exit the system"
 }
 
-#heading string
+#variable assigned for main menu header string
 menu_heading = ("\nReader's Guild Library - Main Menu")
 
 #function for loading books from a file
