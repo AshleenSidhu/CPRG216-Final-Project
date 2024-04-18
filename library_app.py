@@ -21,7 +21,7 @@ menu_options = {
 #heading string
 menu_heading = ("\nReader's Guild Library - Main Menu")
 
-#function for adding 
+#function for loading books from a file
 def load_books(books, file_name):
     book_obj = open(file_name, "r")
 
@@ -31,7 +31,7 @@ def load_books(books, file_name):
         books.append(book)
     return len(books)
 
-
+#function for printing the menu
 def print_menu(menu_heading, menu_options):
     #prints the heading
     print(menu_heading)
@@ -49,7 +49,7 @@ def print_menu(menu_heading, menu_options):
         else: #otherwise if menu option is not found print error message
             print("Invalid option")
 
-
+#fubction for searching books
 def search_books(books, user_search):
     #list for the user searches to be saved to
     search_result = []
@@ -66,7 +66,7 @@ def search_books(books, user_search):
         print("No matching books found.")
     return search_result 
 
-
+#function for borrowing books
 def borrow_book(books):
     #input ISBN from the user and calls find_book_by_isbn()
     isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
@@ -85,7 +85,7 @@ def borrow_book(books):
         else: 
             print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently available.")
 
-
+#function for finding the book by ISBN
 def find_book_by_isbn(books, isbn):
     #assigning and intializing index variable to 0
     index = 0
@@ -113,7 +113,7 @@ def remove_book(books):
     pass
 
 
-
+#function for printing books
 def print_books(books):
     #display book heading
     print(f"{'ISBN':<15}{'Title':<26}{'Author':<26}{'Genre':<21}{'Availability'}")
@@ -127,7 +127,7 @@ def print_books(books):
 def save_books(books, file_name):
     pass
 
-
+#main function
 def main():
     #empty list for books
     books = []
@@ -210,6 +210,6 @@ def main():
             save_books(books)
             print("Book catalog has been saved.\nGood Bye!")
 
-        
+  
 if __name__ == "__main__":
     main()
