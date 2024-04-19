@@ -98,19 +98,57 @@ def find_book_by_isbn(books, isbn):
 
 
 def return_book(books):
-    pass
+     ISBN: Final = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    find_book = find_book_by_isbn(book, ISBN)
+    print(find_book)
+    if find_book == -1:
+        print("No book found with that ISBN")
+    else:
+         if str(book[find_book].get_availability()) == "Available" :
+             print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"is not currently borrowed.")
+         elif str(book[find_book].get_availability()) == "Borrowed" :
+             print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"successfully returned.")
+             book[find_book].return_it()
 
 
 
 
 def add_book(books):
-    pass
+    input_ISBN = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    input_title = input("Enter title: ")
+    input_name = input("Enter author name: ")
+    
+    while True:
+        input_genre = input("Enter genre: ")
+        if ( input_genre in "Romance, Mystery, Science Fiction, Thriller, Young Adult,Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry"):
+            print("Hee")
+            genre_number = genre_[input_genre]
 
+            book.append(Book(input_ISBN,input_title,input_name, int(genre_number), True))
+            
+            break
+        else:
+            print("\nInvalid genre.")
+            print("Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
+    
+    print("genre_number ==",genre_number)
+    print(input_title,"with ISBN",input_ISBN,"successfully added.")
+    print_books(book)
+    
 
 
 
 def remove_book(books):
-    pass
+    #print_books(book)
+    ISBN: Final = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    find_book = find_book_by_isbn(book, ISBN)
+    #print(find_book)
+    if find_book == -1:
+        print("No book found with that ISBN")
+    else:
+         print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"successfully removed.")
+         book_list.pop(find_book)
+
 
 
 #function for printing books
@@ -125,7 +163,14 @@ def print_books(books):
 
 
 def save_books(books, file_name):
-    pass
+    with open(file_name, 'w', newline='') as file:
+        writer = csv.writer(file)
+        for i in range(len(book)):
+            writer.writerow([book[i].get_isbn()
+                             ,book[i].get_title()
+                             ,book[i].get_author()
+                             ,book[i].get_genre_name()
+                             ,book[i].get_availability()])
 
 #main function
 def main():
