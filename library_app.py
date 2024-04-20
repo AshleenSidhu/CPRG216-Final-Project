@@ -70,7 +70,6 @@ def borrow_book(books):
     if index == -1:
         print("No book found with that ISBN.")
     else:
-        
         #otherwise if book is found then display it's availablility
         if books[index].get_availability() == "Available":
             books[index].borrow_it() #invokes the borrow method
@@ -100,7 +99,7 @@ def return_book(books):
          if books[index].get_availability() == "Available" :
             print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently borrowed.")
          elif books[index].get_availability() == "Borrowed" :
-            print(f"'{books[index].get_title()} with ISBN {books[index].get_isbn()} successfully returned.")
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully returned.")
             books[index].return_it()
 
 #function for adding books
@@ -120,12 +119,10 @@ def add_book(books):
             
             break
         else:
-            print("Invalid genre.")
-            print("Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
+            print("Invalid genre.Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
     
     #print("genre_number ==",genre_number)
     print(f"{input_title} with ISBN {input_isbn} successfully added.")
-    print_books(books)
     
 #function for removing books
 def remove_book(books):
@@ -155,7 +152,7 @@ def save_books(books, file_name):
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file)
         for i in range(len(books)):
-        
+            
             writer.writerow([books[i].get_isbn()
                              ,books[i].get_title()
                              ,books[i].get_author()
