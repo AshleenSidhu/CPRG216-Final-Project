@@ -108,21 +108,22 @@ def add_book(books):
     input_title = input("Enter title: ")
     input_name = input("Enter author name: ")
     
-    while True:
+    genre_number = None
+    while genre_number is None:
         input_genre = input("Enter genre: ")
-        
-        if input_genre in [book.get_genre_name() for book in books]:
-            genre_number = [book.get_genre_name() for book in books].index(input_genre)
 
-            #adds the book to the book list
-            books.append(Book(input_isbn, input_title, input_name, int(genre_number), True))
-            
-            break
-        else:
-            print("Invalid genre.Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
-    
+        for key, value in Book.GENRE_NAMES.items():
+            if input_genre.lower() == value.lower():
+                genre_number = key
+                break
+        if genre_number is None:
+            print("Invalid genre. Choices are:", ", ".join(Book.GENRE_NAMES.values()))
+
+    #adds the book to the book list
+    books.append(Book(input_isbn, input_title, input_name, int(genre_number), "True"))
     #print("genre_number ==",genre_number)
-    print(f"{input_title} with ISBN {input_isbn} successfully added.")
+    print(f"'{input_title}' with ISBN {input_isbn} successfully added.")
+    
     
 #function for removing books
 def remove_book(books):

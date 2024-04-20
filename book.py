@@ -1,6 +1,7 @@
 """
 Book Class - This class implements and returns the attributes and methods to display books
 availability, title, author, isbn, and the genre.
+
 Author: Phattharaporn I. and Ashleen S.
 Date: 2024-04-11
 """
@@ -50,7 +51,7 @@ class Book:
 
     # Getter method that returns the name of the genre 
     def get_genre_name(self):
-        return self.GENRE_NAMES[self.__genre]
+        return self.GENRE_NAMES[int(self.__genre)]
 
     # Getter method that finds the availability of the book
     def get_availability(self):
@@ -58,7 +59,6 @@ class Book:
             return "Available"
         else:
             return "Borrowed"
-
 
     # Setters
     def set_isbn(self, isbn):
@@ -73,7 +73,6 @@ class Book:
     def set_genre(self, genre):
         self.__genre = genre
 
-
     # Sets book's available attribute to False
     def borrow_it(self):
         self.__available = False
@@ -85,4 +84,4 @@ class Book:
     # Returns book formatted string 
     def __str__(self):
         return f"{self.__isbn:<15s}{self.__title:<26s}{self.__author:<26s}{self.get_genre_name():<21s}{self.get_availability()}"
-
+    
