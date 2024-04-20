@@ -141,12 +141,12 @@ def remove_book(books):
 #function for printing books
 def print_books(books):
     #display book heading
-    print(f"{'ISBN':<15}{'Title':<26}{'Author':<26}{'Genre':<21}{'Availability'}")
+    print(f"{'ISBN':<15}{'Title':<26}{'Author':<26}{'Genre':<21s}{'Availability'}")
     print("-" * 14, "-" * 25,  "-" * 25, "-" * 20, "-" * 12)
 
     #formats each book in the book list
     for book in books:
-        print(f"{book.get_isbn()} {book.get_title():<25} {book.get_author():<25} {book.get_genre_name():<20} {book.get_availability()}")
+        print(book)
 
 #function for saving books
 def save_books(books, file_name):
