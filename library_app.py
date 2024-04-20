@@ -132,9 +132,9 @@ def remove_book(books):
     index = find_book_by_isbn(books, isbn)
 
     if index == -1:
-        print("No book found with that ISBN")
+        print("No book found with that ISBN.")
     else:
-         print(f"{books[index].get_title()} with ISBN {books[index].get_isbn()} successfully removed.")
+         print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully removed.")
          books.pop(index)
 
 
