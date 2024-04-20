@@ -55,12 +55,11 @@ class Book:
 
     # Getter method that finds the availability of the book
     def get_availability(self):
-        if self.__available:
+        if self.__available == "True":
             return "Available"
         else:
             return "Borrowed"
-
-
+  
     # Setters
     def set_isbn(self, isbn):
         self.__isbn = isbn
@@ -85,7 +84,4 @@ class Book:
 
     # Returns book formatted string 
     def __str__(self):
-        return f"{self.__isbn:<15s}{self.__title:<26s}{self.__author:<26s}{self.get_genre_name():<21s}{self.get_availability()}"
-
-
-
+        return f"{self.__isbn:<15s}{self.__title:<26s}{self.__author:<26s}{self.get_genre_name():<21s}{str(self.get_availability())}"

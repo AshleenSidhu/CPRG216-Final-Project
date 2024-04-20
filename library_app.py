@@ -70,13 +70,13 @@ def borrow_book(books):
     if index == -1:
         print("No book found with that ISBN.")
     else:
+        
         #otherwise if book is found then display it's availablility
         if books[index].get_availability() == "Available":
-            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully borrowed.")
             books[index].borrow_it() #invokes the borrow method
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully borrowed.")
         else: 
             print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently available.")
-
 
 #function for finding the book by ISBN
 def find_book_by_isbn(books, isbn):
@@ -160,7 +160,7 @@ def save_books(books, file_name):
                              ,books[i].get_title()
                              ,books[i].get_author()
                              ,books[i].get_genre()
-                             ,str(books[i].get_availability())])
+                             ,books[i].get_availability()])
 
 #main function
 def main():
