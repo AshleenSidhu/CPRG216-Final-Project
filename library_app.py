@@ -8,18 +8,10 @@ Date: 2024-04-11
 """
 
 from book import Book
+from typing import Final
 import os
+import csv
 
-#dictionary for menu selections
-menu_options = {
-    "1": ". Search for books",
-    "2": ". Borrow a book",
-    "3": ". Return a book",
-    "0": ". Exit the system"
-}
-
-#variable assigned for main menu header string
-menu_heading = ("\nReader's Guild Library - Main Menu")
 
 #function for loading books from a file
 def load_books(books, file_name):
@@ -27,7 +19,7 @@ def load_books(books, file_name):
 
     for line in book_obj:
         split_books = line.rstrip().split(",")
-        book = Book(split_books[0], split_books[1], split_books[2], split_books[3], split_books[4])
+        book = Book(split_books[0], split_books[1], split_books[2], int(split_books[3]), split_books[4])
         books.append(book)
     return len(books)
 
@@ -80,8 +72,8 @@ def borrow_book(books):
     else:
         #otherwise if book is found then display it's availablility
         if books[index].get_availability() == "Available":
-            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully borrowed.")
             books[index].borrow_it() #invokes the borrow method
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully borrowed.")
         else: 
             print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently available.")
 
@@ -96,59 +88,53 @@ def find_book_by_isbn(books, isbn):
             return index #return index if isbn is found 
     return -1 #return -1 if isbn is not found 
 
-
+#function for returning books
 def return_book(books):
-     ISBN: Final = input("Enter the 13-digit ISBN (format 999-9999999999): ")
-    find_book = find_book_by_isbn(book, ISBN)
-    print(find_book)
-    if find_book == -1:
-        print("No book found with that ISBN")
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    index = find_book_by_isbn(books, isbn)
+ 
+    if index == -1:
+        print("No book found with that ISBN.")
     else:
-         if str(book[find_book].get_availability()) == "Available" :
-             print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"is not currently borrowed.")
-         elif str(book[find_book].get_availability()) == "Borrowed" :
-             print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"successfully returned.")
-             book[find_book].return_it()
+         if books[index].get_availability() == "Available" :
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} is not currently borrowed.")
+         elif books[index].get_availability() == "Borrowed" :
+            print(f"'{books[index].get_title()}' with ISBN {books[index].get_isbn()} successfully returned.")
+            books[index].return_it()
 
-
-
-
+#function for adding books
 def add_book(books):
-    input_ISBN = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    input_isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
     input_title = input("Enter title: ")
     input_name = input("Enter author name: ")
     
     while True:
         input_genre = input("Enter genre: ")
-        if ( input_genre in "Romance, Mystery, Science Fiction, Thriller, Young Adult,Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry"):
-            print("Hee")
-            genre_number = genre_[input_genre]
+        
+        if input_genre in [book.get_genre_name() for book in books]:
+            genre_number = [book.get_genre_name() for book in books].index(input_genre)
 
-            book.append(Book(input_ISBN,input_title,input_name, int(genre_number), True))
+            #adds the book to the book list
+            books.append(Book(input_isbn, input_title, input_name, int(genre_number), True))
             
             break
         else:
-            print("\nInvalid genre.")
-            print("Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
+            print("Invalid genre.Choices are: Romance, Mystery, Science Fiction, Thriller, Young Adult, Children's Fiction, Self-help, Fantasy, Historical Fiction, Poetry")
     
-    print("genre_number ==",genre_number)
-    print(input_title,"with ISBN",input_ISBN,"successfully added.")
-    print_books(book)
+    #print("genre_number ==",genre_number)
+    print(f"{input_title} with ISBN {input_isbn} successfully added.")
     
-
-
-
+#function for removing books
 def remove_book(books):
     #print_books(book)
-    ISBN: Final = input("Enter the 13-digit ISBN (format 999-9999999999): ")
-    find_book = find_book_by_isbn(book, ISBN)
-    #print(find_book)
-    if find_book == -1:
+    isbn = input("Enter the 13-digit ISBN (format 999-9999999999): ")
+    index = find_book_by_isbn(books, isbn)
+
+    if index == -1:
         print("No book found with that ISBN")
     else:
-         print(book[find_book].get_title(),"with ISBN",book[find_book].get_isbn(),"successfully removed.")
-         book_list.pop(find_book)
-
+         print(f"{books[index].get_title()} with ISBN {books[index].get_isbn()} successfully removed.")
+         books.pop(index)
 
 
 #function for printing books
@@ -161,21 +147,45 @@ def print_books(books):
     for book in books:
         print(f"{book.get_isbn()} {book.get_title():<25} {book.get_author():<25} {book.get_genre_name():<20} {book.get_availability()}")
 
-
+#function for saving books
 def save_books(books, file_name):
     with open(file_name, 'w', newline='') as file:
         writer = csv.writer(file)
-        for i in range(len(book)):
-            writer.writerow([book[i].get_isbn()
-                             ,book[i].get_title()
-                             ,book[i].get_author()
-                             ,book[i].get_genre_name()
-                             ,book[i].get_availability()])
+        for i in range(len(books)):
+            
+            writer.writerow([books[i].get_isbn()
+                             ,books[i].get_title()
+                             ,books[i].get_author()
+                             ,books[i].get_genre()
+                             ,books[i].get_availability()])
 
 #main function
 def main():
     #empty list for books
     books = []
+
+    #dictionary for menu selections
+    MAIN_MENU: Final = {
+    "1": ". Search for books",
+    "2": ". Borrow a book",
+    "3": ". Return a book",
+    "0": ". Exit the system"
+    }
+
+    #dictionary for librarian menu selections
+    LIBRARIAN_MENU: Final = {
+    "1": ". Search for books",
+    "2": ". Borrow a book",
+    "3": ". Return a book",
+    "4": ". Add a book",
+    "5": ". Remove a book",
+    "6": ". Print catalog",
+    "0": ". Exit the system"
+    }
+
+     #variable assigned for main menu header string
+    MAIN_HEADING = ("\nReader's Guild Library - Main Menu")
+    LIBRARIAN_HEADING = ("\nReader's Guild Library - Librarian Menu")
 
     #starts the program
     print("Starting the system...")
@@ -189,6 +199,9 @@ def main():
     load_books(books, file_name)
     print("Book catalog has been loaded\n", end="")
 
+    menu_heading = MAIN_HEADING
+    menu_options = MAIN_MENU
+    is_librarian = False
 
     while True:
         #displays menu and gets users selection input
@@ -196,37 +209,12 @@ def main():
 
         #if user enters special passcode 2130 then librarian options are unlocked
         if user_choice == "2130":
-        
-            print("\nReader's Guild Library - Librarian Menu\n" + "=" * 39)
+            menu_heading = LIBRARIAN_HEADING
+            menu_options = LIBRARIAN_MENU
+            is_librarian = True
+            user_choice = print_menu(menu_heading, menu_options)
 
-            #print_menu(menu_heading, menu_options)
-            del menu_options["0"]
-            menu_options["4"] = ". Add a book"
-            menu_options["5"] = ". Remove a book"
-            menu_options["6"] = ". Print catalog"
-            menu_options["0"] = ". Exit the system"
-
-            #prints the librarian menu options
-            for key, value in menu_options.items():
-                print(f"{key}{value}")
-
-            librarian_choice = input("Enter your selection: ")
-
-            #user selects library additional options
-            if librarian_choice == "4":
-                print("\n-- Add a book --")
-                add_book(books)
-            if librarian_choice == "5":
-                print("\n-- Remove a book --")
-                remove_book(books)
-            if librarian_choice == "6":
-                print("\n-- Print catalog --")
-                print_books(books)
-
-            if librarian_choice in menu_options:
-                user_choice = librarian_choice
-        
-        # selection 1
+       # selection 1
         if user_choice == "1":
             print("\n-- Search for books --")
 
@@ -239,21 +227,36 @@ def main():
                 print_books(matched_books)
             
         # selection 2 
-        if user_choice == "2":
+        elif user_choice == "2":
             print("\n-- Borrow a book --")
             
             #calls the borrow_book function
             borrow_book(books)
         
         # selection 3
-        if user_choice == "3":
+        elif user_choice == "3":
             print("\n-- Return a book --")
+            return_book(books)    
+
+        elif user_choice == "4" and is_librarian:
+            print("\n-- Add a book --")
+            add_book(books)
             
+        elif user_choice == "5" and is_librarian:
+            print("\n-- Remove a book --")
+            remove_book(books)
+    
+        elif user_choice == "6" and is_librarian:
+            print("\n-- Print catalog --")
+            print_books(books)
+
         # selection 0 
         if user_choice == "0":
-            print("\n-- Exit the system --")
-            save_books(books)
-            print("Book catalog has been saved.\nGood Bye!")
+            break
+
+    print("\n-- Exit the system --")
+    save_books(books, file_name)
+    print("Book catalog has been saved.\nGood Bye!")
 
   
 if __name__ == "__main__":
