@@ -75,11 +75,11 @@ class Book:
 
     # Sets book's available attribute to False
     def borrow_it(self):
-        self.__available = False
+        self.__available = "False"
 
     # Sets book's available attribute to True
     def return_it(self):
-        self.__available = True
+        self.__available = "True"
 
     # Returns book formatted string 
     def __str__(self):
