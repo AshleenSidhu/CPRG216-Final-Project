@@ -54,7 +54,7 @@ class Book:
 
     # Getter method that finds the availability of the book
     def get_availability(self):
-        if self.__available:
+        if self.__available == "True":
             return "Available"
         else:
             return "Borrowed"
