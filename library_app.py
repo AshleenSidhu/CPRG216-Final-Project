@@ -185,8 +185,8 @@ def main():
     }
 
      #variable assigned for main menu header string
-    MAIN_HEADING = ("\nReader's Guild Library - Main Menu")
-    LIBRARIAN_HEADING = ("\nReader's Guild Library - Librarian Menu")
+    MAIN_HEADING: Final = ("\nReader's Guild Library - Main Menu")
+    LIBRARIAN_HEADING: Final = ("\nReader's Guild Library - Librarian Menu")
 
     #starts the program
     print("Starting the system...")
